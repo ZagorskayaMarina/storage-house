@@ -1,10 +1,8 @@
 package com.incorparation.dao;
 
-import com.incorparation.entity.Storage;
-import org.springframework.data.repository.CrudRepository;
+import com.incorparation.model.Storage;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
-import java.util.Optional;
+public interface StorageDAO extends PagingAndSortingRepository<Storage, Integer> {
 
-public interface StorageDAO extends CrudRepository<Storage, Integer> {
-    Optional<Storage> findById(Integer id);
 }

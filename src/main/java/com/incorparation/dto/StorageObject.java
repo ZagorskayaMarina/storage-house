@@ -1,15 +1,12 @@
 package com.incorparation.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.incorparation.constants.Constants;
+import com.incorparation.model.constant.Status;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -39,7 +36,7 @@ public class StorageObject implements Serializable {
         private String address;
         private String zip;
         private String currency;
-        private Constants.Status status;
+        private Status status;
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
     }

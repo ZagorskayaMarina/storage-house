@@ -1,6 +1,6 @@
-package com.incorparation.entity;
+package com.incorparation.model;
 
-import com.incorparation.constants.Constants;
+import com.incorparation.model.constant.Status;
 import lombok.*;
 
 import javax.persistence.*;
@@ -52,7 +52,7 @@ public class Storage implements Serializable {
 
     @Column(name = "status")
     @Enumerated(value = EnumType.STRING)
-    private Constants.Status status;
+    private Status status;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

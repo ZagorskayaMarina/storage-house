@@ -1,4 +1,4 @@
-package com.incorparation.controllers;
+package com.incorparation.controller;
 
 import com.incorparation.dto.StorageObject;
 import com.incorparation.service.StorageService;

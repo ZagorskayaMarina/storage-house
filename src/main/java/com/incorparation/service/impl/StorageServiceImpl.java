@@ -2,7 +2,7 @@ package com.incorparation.service.impl;
 
 import com.incorparation.dao.StorageDAO;
 import com.incorparation.dto.StorageObject;
-import com.incorparation.entity.Storage;
+import com.incorparation.model.Storage;
 import com.incorparation.exception.CommonException;
 import com.incorparation.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
