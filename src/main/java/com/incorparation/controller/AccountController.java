@@ -4,23 +4,25 @@ import com.incorparation.dto.StorageObject;
 import com.incorparation.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
-@RequestMapping(value = "/api/storages")
-public class StorageController {
+@RequestMapping(value = "/api/accounts")
+public class AccountController {
     private final StorageService storageService;
 
     @Autowired
-    public StorageController(StorageService storageService) {
+    public AccountController(StorageService storageService) {
         this.storageService = storageService;
     }
 
-    @GetMapping(value = "/{storageId}")
-    public ResponseEntity<StorageObject.StorageDTO> getStorage(@PathVariable("storageId") Integer storageId) {
-        return ResponseEntity.ok(storageService.getStorageById(storageId));
+    @PostMapping(value = "/create")
+    public ResponseEntity<String> createStorage(@Valid @RequestBody StorageObject.StorageDTO storageDTO) {
+        return ResponseEntity.ok(storageService.createStorage(storageDTO));
     }
 }
