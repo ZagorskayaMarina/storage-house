@@ -1,16 +1,13 @@
 package com.incorparation.service.impl;
 
 import com.incorparation.dao.StorageDAO;
-import com.incorparation.dao.TokenDAO;
 import com.incorparation.exception.CommonException;
 import com.incorparation.model.Storage;
-import com.incorparation.model.Token;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.security.GeneralSecurityException;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -23,15 +20,14 @@ public class AuthenticationService {
 
     private final TokenGenerationService tokenGenerationService;
     private final CipherService cipherService;
-    private final TokenDAO tokenDAO;
     private final StorageDAO storageDAO;
 
     @Autowired
-    public AuthenticationService(TokenGenerationService tokenGenerationService, CipherService cipherService,
-                                 TokenDAO tokenDAO, StorageDAO storageDAO) {
+    public AuthenticationService(TokenGenerationService tokenGenerationService,
+                                 CipherService cipherService,
+                                 StorageDAO storageDAO) {
         this.tokenGenerationService = tokenGenerationService;
         this.cipherService = cipherService;
-        this.tokenDAO = tokenDAO;
         this.storageDAO = storageDAO;
     }
 
@@ -40,19 +36,10 @@ public class AuthenticationService {
                 .toString()
                 .replace("-", StringUtils.EMPTY);
 
-        Token token = Token.builder()
-                .storage(storage)
-                .accessToken(accessToken)
-                .createdDate(LocalDateTime.now())
-                .build();
-
-
-        tokenDAO.save(token);
-
         return generateToken(storage, accessToken);
     }
 
-    public Storage validateAccessToken(String token) {
+    public boolean isStorageExist(String token) {
         var payload = decodeToken(token);
 
         if (payload.isEmpty()) {
@@ -60,16 +47,10 @@ public class AuthenticationService {
         }
 
         var storageId = (Integer) payload.get(STORAGE_ID);
-        String savedInDBAccessToken = tokenDAO.findTokenByStorage(storageId).getAccessToken();
 
-        var inputtedAccessToken = (String) payload.get(ACCESS_TOKEN);
+        Optional<Storage> storageDAOById = storageDAO.findById(storageId);
 
-        if (!savedInDBAccessToken.equals(inputtedAccessToken)) {
-            throw new CommonException("Invalid token");
-        }
-
-        Optional<Storage> storage = storageDAO.findById(storageId);
-        return storage.orElse(null);
+        return storageDAOById.isPresent();
 
     }
 

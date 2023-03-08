@@ -25,4 +25,9 @@ public class AccountController {
     public ResponseEntity<String> createStorage(@Valid @RequestBody StorageObject.StorageDTO storageDTO) {
         return ResponseEntity.ok(storageService.createStorage(storageDTO));
     }
+
+    @PostMapping(value = "/login")
+    public ResponseEntity<String> login(@RequestBody StorageObject.StorageLoginDTO storageLogin) {
+        return ResponseEntity.ok(storageService.login(storageLogin));
+    }
 }

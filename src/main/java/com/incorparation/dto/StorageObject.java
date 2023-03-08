@@ -50,4 +50,14 @@ public class StorageObject implements Serializable {
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
     }
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Data
+    @Builder
+    public static class StorageLoginDTO implements Serializable {
+        @Email(message = "Email is required parameter")
+        private String email;
+    }
 }
