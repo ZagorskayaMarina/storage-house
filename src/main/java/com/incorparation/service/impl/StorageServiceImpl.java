@@ -6,6 +6,7 @@ import com.incorparation.exception.CommonException;
 import com.incorparation.mapper.StorageMapper;
 import com.incorparation.model.Storage;
 import com.incorparation.service.StorageService;
+import com.incorparation.util.EncryptDecrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,7 @@ public class StorageServiceImpl implements StorageService {
     @Override
     public String createStorage(StorageObject.StorageDTO storageDTO) {
         if (storageDAO.findByEmail(storageDTO.getEmail()).isPresent()) {
-            throw new CommonException("The storage with email " + storageDTO.getEmail() + "exists");
+            throw new CommonException("storage.already.exist");
         }
 
         Storage storage = buildStorage(storageDTO);
@@ -45,9 +46,23 @@ public class StorageServiceImpl implements StorageService {
         Optional<Storage> optionalStorage = storageDAO.findByEmail(login.getEmail());
 
         if (optionalStorage.isPresent()) {
-            return authenticationService.createToken(optionalStorage.get());
+            var salt = optionalStorage.get().getSalt();
+
+            String passwordFromDB = optionalStorage.get().getPassword();
+
+            String inputtedEncryptedAndHashedPassword = EncryptDecrypt.byteToBase64(EncryptDecrypt.getHash(
+                    EncryptDecrypt.encrypt(login.getPassword()),
+                    EncryptDecrypt.stringToByteBase64(salt)
+            ));
+
+            if (inputtedEncryptedAndHashedPassword.equals(passwordFromDB)) {
+                return authenticationService.createToken(optionalStorage.get());
+            } else {
+                throw new CommonException("invalid.password");
+            }
+
         } else {
-            throw new CommonException("The storage with email " + login.getEmail() + "doesn't exist");
+            throw new CommonException("storage.not.exist");
         }
     }
 
@@ -55,6 +70,21 @@ public class StorageServiceImpl implements StorageService {
         Storage storage = storageMapper.DtoToStorage(storageDTO);
         storage.setCreatedAt(LocalDateTime.now());
 
+        encryptStoragePassword(storage);
+
         return storage;
+    }
+
+    private void encryptStoragePassword(Storage storage) {
+        var salt = EncryptDecrypt.getSalt();
+
+        storage.setSalt(EncryptDecrypt.byteToBase64(salt));
+        storage.setPassword(EncryptDecrypt.byteToBase64(
+                        EncryptDecrypt.getHash(
+                                EncryptDecrypt.encrypt(storage.getPassword()),
+                                salt
+                        )
+                )
+        );
     }
 }

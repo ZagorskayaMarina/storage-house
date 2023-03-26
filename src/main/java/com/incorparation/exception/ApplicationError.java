@@ -7,9 +7,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ApplicationError {
     private String errorMessage;
-    private Integer errorCode;
+    private Integer httpErrorCode;
 
-    public ApplicationError(String errorMessage) {
+    public ApplicationError(String errorMessage, Integer httpErrorCode) {
         this.errorMessage = errorMessage;
+        this.httpErrorCode = httpErrorCode;
     }
 }

@@ -27,7 +27,7 @@ public class TokenGenerationService {
         try {
             return new JWTVerifier(jwtSecretKet).verify(token);
         } catch (NoSuchAlgorithmException | InvalidKeyException | IOException | SignatureException | JWTVerifyException ex) {
-            throw new CommonException("Invalid token", ex);
+            throw new CommonException("invalid.token");
         }
     }
 }

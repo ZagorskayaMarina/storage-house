@@ -44,7 +44,7 @@ public class SecurityFilter implements Filter {
             filterRequest(httpRequest);
             filterChain.doFilter(httpRequest, httpResponse);
         } catch (Exception ex) {
-            throw new CommonException("Error");
+            throw new CommonException("invalid.token");
         }
     }
 
@@ -80,13 +80,13 @@ public class SecurityFilter implements Filter {
         var authorization = request.getHeader("Authorization");
 
         if (StringUtils.isBlank(authorization)) {
-            throw new CommonException("Invalid token");
+            throw new CommonException("invalid.token");
         }
 
         var authArray = authorization.split("\\s+");
 
         if (authArray.length < 2) {
-            throw new CommonException("Invalid token");
+            throw new CommonException("invalid.token");
         }
 
         return authArray[1];
@@ -96,7 +96,7 @@ public class SecurityFilter implements Filter {
         if(authenticationService.isStorageExist(token)) {
             return;
         } else {
-            throw new CommonException("incorrect token");
+            throw new CommonException("invalid.token");
         }
     }
 

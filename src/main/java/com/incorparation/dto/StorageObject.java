@@ -35,6 +35,8 @@ public class StorageObject implements Serializable {
         private String owner;
         @Email(message = "Email is required parameter")
         private String email;
+        @NotEmpty(message = "Password is required parameter")
+        private String password;
         @NotEmpty(message = "Country is required parameter")
         private String country;
         private String province;
@@ -59,5 +61,7 @@ public class StorageObject implements Serializable {
     public static class StorageLoginDTO implements Serializable {
         @Email(message = "Email is required parameter")
         private String email;
+        @NotEmpty(message = "Password is required parameter")
+        private String password;
     }
 }

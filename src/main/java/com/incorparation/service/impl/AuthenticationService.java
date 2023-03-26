@@ -73,7 +73,7 @@ public class AuthenticationService {
             var decryptAES = cipherService.decryptAES(token);
             return tokenGenerationService.decodePayload(decryptAES);
         } catch (GeneralSecurityException ex) {
-            throw new CommonException("Invalid token");
+            throw new CommonException("invalid.token");
         }
     }
 
