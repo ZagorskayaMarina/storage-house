@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -24,5 +25,15 @@ public class ProductController {
     @GetMapping(value = "/categories")
     public ResponseEntity<CategoryObject> getCategories() {
         return ResponseEntity.ok(productService.getCategories());
+    }
+
+    @GetMapping(value = "/test")
+    public ResponseEntity<CategoryObject> getTestCacheControl() {
+        return ResponseEntity.ok(productService.getCategories());
+    }
+
+    @RequestMapping(value="/options", method = RequestMethod.OPTIONS)
+    public ResponseEntity options() {
+        return ResponseEntity.ok("Options test");
     }
 }

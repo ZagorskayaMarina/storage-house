@@ -1,4 +1,4 @@
-package com.incorparation.security.filters;
+package com.incorparation.filters;
 
 import com.incorparation.annotations.Authenticate;
 import com.incorparation.exception.CommonException;
