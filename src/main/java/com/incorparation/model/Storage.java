@@ -32,6 +32,12 @@ public class Storage implements Serializable {
     @Column(name = "email")
     private String email;
 
+    @Column(name = "password")
+    private String password;
+
+    @Column(name = "salt")
+    private String salt;
+
     @Column(name = "country")
     private String country;
 
