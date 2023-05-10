@@ -7,16 +7,19 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Component
-public class InterceptorAppConfig implements WebMvcConfigurer {
+public class MvcConfig implements WebMvcConfigurer {
     CacheControlInterceptor cacheControlInterceptor;
 
     @Autowired
-    public InterceptorAppConfig(CacheControlInterceptor cacheControlInterceptor) {
+    public MvcConfig(CacheControlInterceptor cacheControlInterceptor) {
         this.cacheControlInterceptor = cacheControlInterceptor;
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        cacheControlInterceptor.addExcludeCache("/storage/api/products/categories");
+        cacheControlInterceptor.addNoCache("/storage/api/products/test");
+
         registry.addInterceptor(cacheControlInterceptor);
     }
 }
